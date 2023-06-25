@@ -19,7 +19,7 @@ export default function Home() {
 
       <footer className={styles.footer}>
         <span>
-          This web application was developed in 2022 with NextJS, React, TypeScript, and TailwindCSS
+          This web application was developed in 2022 with NextJS, React, TypeScript, and Tailwind CSS
           to complete the CGI NextJS Technical Training.
         </span>
       </footer>
