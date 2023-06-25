@@ -6,6 +6,7 @@ export default function Home() {
     <div className={styles.container}>
       <Head>
         <title>CGI - NextJS Technical Training - Spencer Plasse</title>
+        <meta charSet='utf-8' />
         <meta name="description"
           content="Project developed as part of completing the CGI NextJS Technical Training" />
       </Head>
