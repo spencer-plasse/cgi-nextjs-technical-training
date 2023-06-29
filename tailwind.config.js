@@ -6,7 +6,15 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    fontFamily: {
+      'forms': ["Tahoma"]
+    }
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms')
+  ],
+  corePlugins: {
+    preflight: false,
+ }
 }
 
