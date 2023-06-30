@@ -20,7 +20,7 @@ Develop a “NextJS” app that has two routes with the following functionality:
 
  - [x] The contact me form should send a message to a faked API containing the form data. That API should respond with a message saying “Sent” after receiving the request. The response “Sent” should show up somewhere near the form after the response has been received.
  - [x] Clicking the “Reset” Button should reset the form back to its default values and make the “Sent” message go away
- - [ ] The form should use Validation (Bonus points for using React Hook Form) for at least one field in the form.
+ - [x] The form should use Validation (Bonus points for using React Hook Form) for at least one field in the form.
 
 2. #### “**API**” page that utilizes a Free Online API or your own API with a backend to display some information from a third party source:
 
