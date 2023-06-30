@@ -1,7 +1,7 @@
 export const FormElementErrorMessage = (props: {
-  fieldName: string
+  errorMessage: string
 }) => {
   return (
-    <span className="text-red-500">{props.fieldName} is a required field!</span>
+    <span className="text-red-500">{props.errorMessage}</span>
   )
 };

@@ -1,8 +1,8 @@
-// NextJS
+// Next.js
 import Image from "next/image";
 
 // React
-import { ChangeEvent, ChangeEventHandler, useState } from "react";
+import { useState } from "react";
 
 // React Hook Form
 import { useForm, SubmitHandler } from "react-hook-form"
@@ -21,14 +21,8 @@ type ContactFormInputs = {
 }
 
 export default function Home() {
-  const { register, handleSubmit, reset, clearErrors, formState: {errors} } = useForm<ContactFormInputs>();
+  const { register, handleSubmit, reset, formState: {errors} } = useForm<ContactFormInputs>({mode: "onBlur"});
   const [contactFormResponse, setContactFormResponse] = useState<string>("");
-
-  // TODO: Manual form input registration to wrap onChange with onInputChange?
-
-  const onInputChange: ChangeEventHandler<HTMLInputElement> = (event: ChangeEvent<HTMLInputElement>) => {
-    clearErrors();
-  };
 
   /**
    * Handles sending a mocked API request when the "Submit" button is clicked.
@@ -85,19 +79,23 @@ export default function Home() {
 
       <form method="post" onSubmit={handleSubmit(onSubmit)}
           className="w-1/3 border-slate-500 border-2 rounded-md border-solid p-8">
-        <FormTextInput id="name" placeholder="First Last" labelText="Name" required
-          {...register("name", { required: true})} />
-        {errors.name && <FormElementErrorMessage fieldName="Name" />}
+        <div className="mb-4">
+          <FormTextInput id="name" name="name" placeholder="First Last" labelText="Name"
+            required register={register} />
+          {errors.name && <FormElementErrorMessage errorMessage={errors.name.message!}/>}
+        </div>
+        
+        <div className="mb-4">
+          <FormTextInput id="emailAddress" type="email" name="emailAddress" placeholder="test@example.com"
+            labelText="Email Address" required register={register} />
+          {errors.emailAddress && <FormElementErrorMessage errorMessage={errors.emailAddress.message!} />}
+        </div>
 
-        <FormTextInput id="email_address" type="email"
-          placeholder="test@example.com" labelText="Email Address" required
-          {...register("emailAddress", { required: true })} />
-        {errors.emailAddress && <FormElementErrorMessage fieldName="Email Address" />}
-
-        <FormTextArea id="message" placeholder="Enter a message to send here!"
-          labelText="Message" rows={4} cols={25} required
-          {...register("message", { required: true })} />
-        {errors.message && <FormElementErrorMessage fieldName="Message" />}
+        <div className="mb-4">
+          <FormTextArea id="message" name="message" placeholder="Enter a message to send here!"
+            labelText="Message" rows={4} cols={25} required register={register} />
+          {errors.message && <FormElementErrorMessage errorMessage={errors.message.message!} />}
+        </div>
 
         <div className="text-center mb-4">
           <FormButton type="submit" buttonText="Send" position="inline" />
