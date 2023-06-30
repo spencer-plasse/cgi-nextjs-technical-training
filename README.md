@@ -30,4 +30,4 @@ Develop a “NextJS” app that has two routes with the following functionality:
 
 5. - [x] The Application should use at least one common component (not including the layout)
 
-6. - [ ] The Application must have at least one Page that uses Server-Side Rendering or Static Generation (can use both but not required).
+6. - [x] The Application must have at least one Page that uses Server-Side Rendering or Static Generation (can use both but not required).
