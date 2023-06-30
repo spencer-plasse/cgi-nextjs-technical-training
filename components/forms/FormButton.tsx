@@ -1,40 +1,30 @@
+// Types
+import { ButtonType, FormElementPositionType } from "../../utils/forms/types";
+
+// Styles
+import { ButtonStyles } from "../../utils/forms/styles";
+
+// Custom components
 import { FormElement } from "./FormElement";
 
 /**
- * Dictionary mapping button type (ex. `submit` or `reset`) to preset styles (ex.
- * border, background, and text colors).
+ * Component to represent a custom `<button type="submit" | "reset"... />` element with custom styling.
+ * Border/text/background color on hover are determined by the `type` prop: green for `submit` and red for `reset`.
+ * 
+ * @param props Dictionary of component props
+ * @param props.type `ButtonType` of either `"submit"` or `"reset"` - determines formatting
+ * @param props.buttonText String of text to display on the button
+ * @param props.position Optional `FormElementPositionType` of either `"block"` or `"inline"` to determine
+ * 												positioning in the form - default is `"inline"`
+ * @param props.classNames Optional string containing additional Tailwind/CSS classes to apply to button styling
+ * @param props.handleClick Callback function to be triggered when the button is clicked
+ * 
+ * @returns Formatted `<button type="submit" | "reset"... />` element with custom styling and an optional onClick handler
  */
-const ButtonStyles = {
-	/**
-	 * Style for `submit` buttons - green border and text with green background
-	 * on hover and white text.
-	 */
-	submit: {
-		borderColor: "border-green-500",
-		textColor: "text-green-500",
-		hover: {
-			hoverBackgroundColor: "hover:bg-green-500",
-			hoverTextColor: "hover:text-white"
-		}
-	},
-	/**
-	 * Style for `reset` buttons - red border and text with red background
-	 * on hover and white text.
-	 */
-	reset: {
-		borderColor: "border-red-500",
-		textColor: "text-red-500",
-		hover: {
-			hoverBackgroundColor: "hover:bg-red-500",
-			hoverTextColor: "hover:text-white"
-		}
-	}
-}
-
 export const FormButton = (props: {
-	type: "submit" | "reset",
+	type: ButtonType,
 	buttonText: string,
-	position?: "block" | "inline"
+	position?: FormElementPositionType
 	classNames?: string,
 	handleClick?: () => void
 }) => {

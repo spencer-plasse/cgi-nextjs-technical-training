@@ -1,13 +1,21 @@
-// NextJS
+// Next.js
 import Head from "next/head";
 
 // Custom components
-import { NavLink } from "./NavLink";
+import NavLink from "./NavLink";
 
 // Styles
 import styles from "../styles/Home.module.css";
 
-export default function Layout({children}: {children: React.ReactNode}){
+/**
+ * Wrapper for page components to add common metadata, navbar, and footer elements.
+ * 
+ * @param props Dictionary of component props
+ * @param props.children Child components contained under this `Layout` component
+ * 
+ * @returns Wrapped `Layout` component around the `children` in props with metadeta, a navbar, and a footer.
+ */
+export default function Layout(props: {children: React.ReactNode}){
   return (
     <div className={styles.container}>
       <Head>
@@ -25,12 +33,12 @@ export default function Layout({children}: {children: React.ReactNode}){
       </header>
 
       <main className={styles.main}>
-        {children}
+        {props.children}
       </main>
 
       <footer className={styles.footer}>
         <span>
-          This web application was developed in 2023 with NextJS, React, TypeScript, and Tailwind CSS
+          This web application was developed in 2023 with Next.js, React, TypeScript, and Tailwind CSS
           to complete the CGI NextJS Technical Training.
         </span>
       </footer>

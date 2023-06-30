@@ -7,6 +7,9 @@ import { useState } from "react";
 // React Hook Form
 import { useForm, SubmitHandler } from "react-hook-form"
 
+// Types
+import { ContactFormInputsType } from "../utils/forms/types";
+
 // Custom components
 import Layout from "../components/Layout";
 import { FormButton } from "../components/forms/FormButton";
@@ -14,20 +17,21 @@ import { FormTextArea } from "../components/forms/FormTextArea";
 import { FormTextInput } from "../components/forms/FormTextInput";
 import { FormElementErrorMessage } from "../components/forms/FormElementErrorMessage";
 
-type ContactFormInputs = {
-  name: string,
-  emailAddress: string,
-  message: string
-}
-
+/**
+ * Component to represent the Home/About Me page layout. Contains a common navbar header on the top of the page,
+ * an image and description of myself, a custom-styled contact form with validation and a mocked API call,
+ * and a common footer.
+ * 
+ * @returns Component containing the Home/About Me page layout
+ */
 export default function Home() {
-  const { register, handleSubmit, reset, formState: {errors} } = useForm<ContactFormInputs>({mode: "onBlur"});
+  const { register, handleSubmit, reset, formState: {errors} } = useForm<ContactFormInputsType>({mode: "onBlur"});
   const [contactFormResponse, setContactFormResponse] = useState<string>("");
 
   /**
    * Handles sending a mocked API request when the "Submit" button is clicked.
    */
-  const onSubmit: SubmitHandler<ContactFormInputs> = () => {
+  const onSubmit: SubmitHandler<ContactFormInputsType> = () => {
     // Asynchronous wrapper function for the API call when the contact form is submitted
     const submitForm = async () => {
       const response = await fetch("/api/contact", {

@@ -1,7 +1,16 @@
 // Custom components
 import Layout from "../components/Layout";
 
-export default function SpotifyAPIPage(){
+/**
+ * 
+ * 
+ * @param props Dictionary of component props
+ * 
+ * @returns TODO
+ */
+export default function SpotifyAPIPage(props: {
+
+}){
   return (
     <Layout>
       <p>Placeholder text!</p>
@@ -22,4 +31,11 @@ export async function getServerSideProps() {
   obtainAccessToken().then((response) => {
     // TODO: Chain API calls for pre-rendering default API data here
   });
+
+  // Temporary return to let the page load for now - will populate with data later
+  return {
+    props: {
+
+    }
+  };
 }

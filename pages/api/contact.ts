@@ -1,11 +1,8 @@
+// Next.js
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-/**
- * DTO type representing the response that will be sent back to the index.tsx contact form.
- */
-type ResponseData = {
-  message: string
-}
+// Types
+import { ContactFormResponseData } from '../../utils/api/types';
 
 /**
  * Hardcoded mock API route handler for the index.tsx contact form.
@@ -15,7 +12,7 @@ type ResponseData = {
  * 
  * @returns Successful JSON response with a hardcoded `message` value of "Sent!"
  */
-export default function handler(_: NextApiRequest, res: NextApiResponse<ResponseData>) {
+export default function handler(_: NextApiRequest, res: NextApiResponse<ContactFormResponseData>) {
   res.status(200).json({ message: "Sent!" });
   return res;
 }
