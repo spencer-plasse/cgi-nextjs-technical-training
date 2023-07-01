@@ -4,6 +4,9 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 // Types
 import { SpotifyAccessTokenResponseData } from '../../../utils/api/types';
 
+// Constants
+import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from '../../../utils/constants';
+
 /**
  * Handler for a utility API route to obtain a Spotify API access token that can be used
  * to make API calls on the spotify_api.tsx page.
