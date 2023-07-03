@@ -56,7 +56,7 @@ export default function Home() {
   };
 
   return (
-    <Layout>
+    <Layout centerVertically>
       <Image src="/me.jpeg" width={300} height={400} alt="Picture of myself!" className="rounded-3xl" />
       <h1 className="opacity-75">Spencer Plasse</h1>
 

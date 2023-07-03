@@ -12,7 +12,7 @@ export type FormElementPositionType = "block" | "inline";
  * - `"submit"` - Submit the form that the button resides in
  * - `"reset"` - Reset data in the form that the button resides in
  */
-export type ButtonType = "submit" | "reset";
+export type FormButtonType = "submit" | "reset";
 
 /**
  * Type union containing the possible options for the `type` attribute on a text input:
@@ -34,3 +34,14 @@ export type ContactFormInputsType = {
   emailAddress: string;
   message: string;
 };
+
+/**
+ * DTO type representing an `<option>` of a `FormDropDownList`.
+ * 
+ * - `displayText` - Text displayed to the user in the dropdown list
+ * - `value` - Underlying value of the dropdown list option
+ */
+export type FormDropDownListDataType = {
+  displayText: string,
+  value: string
+}

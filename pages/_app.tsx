@@ -1,5 +1,12 @@
-import '../styles/globals.css'
+// Next.js
 import type { AppProps } from 'next/app'
+
+// Redux
+import { Provider } from 'react-redux'
+import { store } from '../utils/redux/store'
+
+// Styles
+import '../styles/globals.css'
 
 /**
  * Entry point component to the web application. Renders the current
@@ -11,5 +18,9 @@ import type { AppProps } from 'next/app'
  * @returns Current page of the website
  */
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <Provider store={store}>
+      <Component {...pageProps} />
+    </Provider>
+  )
 }

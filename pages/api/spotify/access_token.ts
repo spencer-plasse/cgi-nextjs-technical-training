@@ -5,7 +5,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { SpotifyAccessTokenResponseData } from '../../../utils/api/types';
 
 // Constants
-import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from '../../../utils/constants';
+import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from '../../../utils/api/constants';
 
 /**
  * Handler for a utility API route to obtain a Spotify API access token that can be used
@@ -33,18 +33,22 @@ export default async function handler(
    * set to run on a timer of 1 hour (60 minutes * 60 seconds * 1000 milliseconds). If this call to
    * obtain a token is made while a token is still active, that access token is returned instead.
    */
-  setInterval(async () => {
+  //setInterval(async () => {
     // See here for API request reference: https://developer.spotify.com/documentation/web-api/tutorials/getting-started
+  try {
     const response = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
         Authorization:
-          "Basic " +
-          Buffer.from(SPOTIFY_CLIENT_ID + ":" + SPOTIFY_CLIENT_SECRET).toString(
+          "Basic " + 
+          (Buffer.from(SPOTIFY_CLIENT_ID + ":" + SPOTIFY_CLIENT_SECRET)).toString(
             "base64"
           ),
       },
+      body: new URLSearchParams({
+        grant_type: "client_credentials"
+      })
     });
 
     // If the response was anything but successful, clone the code to the response back to the caller
@@ -55,12 +59,20 @@ export default async function handler(
 
     const accessTokenData = await response.json();
 
-    // If the client authenticated to the Spotify API but no data was returned, assume a server error by default
-    if (!accessTokenData) {
-      res.status(500); // 500: Internal Server Error
-      return res;
+    if (accessTokenData) {
+      res.status(200).json(accessTokenData); // 200: OK
     }
 
-    res.status(200).json(accessTokenData); // 200: OK
-  }, 60 * 60 * 1000);
+    // If the client authenticated to the Spotify API but no data was returned, assume a server error by default
+    else {
+      res.status(500); // 500: Internal Server Error
+    }
+  }
+
+  catch {
+    res.status(500); // 500: Internal Server Error
+  }
+
+  //}, 60 * 60 * 1000);
+  return res;
 }

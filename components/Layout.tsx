@@ -12,10 +12,14 @@ import styles from "../styles/Home.module.css";
  * 
  * @param props Dictionary of component props
  * @param props.children Child components contained under this `Layout` component
+ * @param props.centerVertically Optional boolean flag determining whether the main page contents should be vertically centered
  * 
  * @returns Wrapped `Layout` component around the `children` in props with metadeta, a navbar, and a footer.
  */
-export default function Layout(props: {children: React.ReactNode}){
+export default function Layout(props: {
+  children: React.ReactNode,
+  centerVertically?: boolean
+}){
   return (
     <div className={styles.container}>
       <Head>
@@ -32,7 +36,7 @@ export default function Layout(props: {children: React.ReactNode}){
         </nav>
       </header>
 
-      <main className={styles.main}>
+      <main className={(props.centerVertically ?? false) ? styles["main-align-center-vertically"] : styles.main}>
         {props.children}
       </main>
 
