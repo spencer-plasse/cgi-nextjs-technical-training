@@ -42,7 +42,7 @@ export default function Layout(props: {
 
       <footer className={styles.footer}>
         <span>
-          This web application was developed in 2023 with Next.js, React, TypeScript, and Tailwind CSS
+          This web application was developed in 2023 with Next.js, React, Redux, TypeScript, and Tailwind CSS
           to complete the CGI NextJS Technical Training.
         </span>
       </footer>
