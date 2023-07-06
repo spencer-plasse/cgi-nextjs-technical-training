@@ -19,3 +19,12 @@ export const SPOTIFY_ARTIST_IDS = {
     "The Killers": "0C0XlULifJtAgn6ZNCW2eu",
     "Weezer": "3jOstUTkEu2JkjvRdBA5Gu"
 }
+
+/**
+ * 
+ */
+export const SPOTIFY_ACCESS_TOKEN_RESPONSE_DATA_INIT = {
+    accessToken: "",
+    tokenType: "",
+    expiresIn: -1
+}

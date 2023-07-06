@@ -1,24 +1,29 @@
+// React
+import { useState } from "react";
+
 // Redux
-import { useDispatch, useSelector } from 'react-redux'
-import { refreshAccessToken } from '../utils/redux/apiSlice';
+import { useDispatch, useSelector } from "react-redux";
+import { refreshAccessToken } from "../utils/redux/apiSlice";
 
 // Dates
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 // Custom components
 import Layout from "../components/Layout";
 import { FormButton } from "../components/forms/FormButton";
 import { FormDropDownList } from "../components/forms/FormDropDownList";
+import { SpotifyArtistInfo } from "../components/api/SpotifyArtistInfo";
+import { SpotifyTopSongList } from "../components/api/SpotifyTopSongList";
 
 // Constants
-import { SPOTIFY_ACCESS_TOKEN_DATA_INIT, SPOTIFY_ARTIST_IDS } from "../utils/api/constants";
+import { SPOTIFY_ACCESS_TOKEN_RESPONSE_DATA_INIT, SPOTIFY_ARTIST_IDS } from "../utils/api/constants";
 
 // Types
 import { FormDropDownListDataType } from "../utils/forms/types";
 import { SpotifyAccessTokenResponseData, SpotifyAccessTokenSliceData } from '../utils/api/types';
 
 // Utility functions
-import { hasAccessTokenExpired, obtainAccessToken } from '../utils/api/helpers';
+import { getArtistInfo, getArtistTop10Songs, hasAccessTokenExpired, obtainAccessToken } from '../utils/api/helpers';
 
 /**
  * TODO
@@ -31,9 +36,11 @@ export default function SpotifyAPIPage(props: {
   initialAccessTokenData: SpotifyAccessTokenSliceData,
   initialDisplayData: {}
 }){
-  let artistDropDownData: Array<FormDropDownListDataType> = [];
   const accessTokenData = useSelector((state: any) => state.apiReducer);
   const dispatch = useDispatch();
+
+  const [displayData, setDisplayData] = useState<React.ReactNode>();
+  let artistDropDownData: Array<FormDropDownListDataType> = [];
 
   // Would've been a bit more concise in Python...this converts the SPOTIFY_ARTIST_IDS dictionary
   // to an array of dictionaries with displayText and value fields for the form's dropdown list
@@ -49,7 +56,7 @@ export default function SpotifyAPIPage(props: {
    */
   const refreshAccessTokenData = async () => {
     if (hasAccessTokenExpired(accessTokenData.expireTime)) {
-      await obtainAccessToken().then((response) => {
+      await obtainAccessToken().then(response => {
         dispatch(refreshAccessToken(response));
       });
     }
@@ -60,6 +67,9 @@ export default function SpotifyAPIPage(props: {
    */
   const handleDisplayArtistInfo = async () => {
     await refreshAccessTokenData();
+    await getArtistInfo().then(response => {
+      setDisplayData(<SpotifyArtistInfo />);
+    });
   }
 
   /**
@@ -67,6 +77,9 @@ export default function SpotifyAPIPage(props: {
    */
   const handleDisplayTop10Songs = async () => {
     await refreshAccessTokenData();
+    await getArtistTop10Songs().then(response => {
+      setDisplayData(<SpotifyTopSongList songs={["Truce", "Goner", "Leave the City", "Redecorate"]} />);
+    });
   }
 
   return (
@@ -86,12 +99,16 @@ export default function SpotifyAPIPage(props: {
             handleClick={handleDisplayTop10Songs} />
         </div>
       </form>
+
+      <div>
+        {displayData}
+      </div>
     </Layout>
   );
 }
 
 export async function getServerSideProps() {
-  let accessTokenData: SpotifyAccessTokenResponseData = SPOTIFY_ACCESS_TOKEN_DATA_INIT;
+  let accessTokenData: SpotifyAccessTokenResponseData = SPOTIFY_ACCESS_TOKEN_RESPONSE_DATA_INIT;
   let initialDisplayData = {};
 
   await obtainAccessToken().then((response) => {
