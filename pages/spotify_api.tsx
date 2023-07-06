@@ -1,6 +1,9 @@
 // Redux
-//import { useDispatch, useSelector } from 'react-redux'
-//import { refreshAccessToken } from '../utils/redux/apiSlice';
+import { useDispatch, useSelector } from 'react-redux'
+import { refreshAccessToken } from '../utils/redux/apiSlice';
+
+// Dates
+import dayjs from 'dayjs';
 
 // Custom components
 import Layout from "../components/Layout";
@@ -8,12 +11,14 @@ import { FormButton } from "../components/forms/FormButton";
 import { FormDropDownList } from "../components/forms/FormDropDownList";
 
 // Constants
-import { LOCAL_URL } from "../utils/constants";
 import { SPOTIFY_ACCESS_TOKEN_DATA_INIT, SPOTIFY_ARTIST_IDS } from "../utils/api/constants";
 
 // Types
 import { FormDropDownListDataType } from "../utils/forms/types";
-import { SpotifyAccessTokenResponseData } from '../utils/api/types';
+import { SpotifyAccessTokenResponseData, SpotifyAccessTokenSliceData } from '../utils/api/types';
+
+// Utility functions
+import { hasAccessTokenExpired, obtainAccessToken } from '../utils/api/helpers';
 
 /**
  * TODO
@@ -23,10 +28,12 @@ import { SpotifyAccessTokenResponseData } from '../utils/api/types';
  * @returns TODO
  */
 export default function SpotifyAPIPage(props: {
-  accessTokenData: SpotifyAccessTokenResponseData,
+  initialAccessTokenData: SpotifyAccessTokenSliceData,
   initialDisplayData: {}
 }){
   let artistDropDownData: Array<FormDropDownListDataType> = [];
+  const accessTokenData = useSelector((state: any) => state.apiReducer);
+  const dispatch = useDispatch();
 
   // Would've been a bit more concise in Python...this converts the SPOTIFY_ARTIST_IDS dictionary
   // to an array of dictionaries with displayText and value fields for the form's dropdown list
@@ -37,12 +44,29 @@ export default function SpotifyAPIPage(props: {
     });
   }
 
-  const handleDisplayArtistInfo = () => {
-    // TODO
+  /**
+   * Async wrapper function to refresh the Spotify API access token if it has expired.
+   */
+  const refreshAccessTokenData = async () => {
+    if (hasAccessTokenExpired(accessTokenData.expireTime)) {
+      await obtainAccessToken().then((response) => {
+        dispatch(refreshAccessToken(response));
+      });
+    }
   }
 
-  const handleDisplayTop10Songs = () => {
-    // TODO
+  /**
+   * Loads Spotify API data for the selected artist.
+   */
+  const handleDisplayArtistInfo = async () => {
+    await refreshAccessTokenData();
+  }
+
+  /**
+   * Loads Spotify API data for the selected artist's top 10 songs.
+   */
+  const handleDisplayTop10Songs = async () => {
+    await refreshAccessTokenData();
   }
 
   return (
@@ -70,29 +94,20 @@ export async function getServerSideProps() {
   let accessTokenData: SpotifyAccessTokenResponseData = SPOTIFY_ACCESS_TOKEN_DATA_INIT;
   let initialDisplayData = {};
 
-  // Asynchronous wrapper function for the API call to obtain a Spotify API access token
-  const obtainAccessToken = async () => {
-    const response = await fetch(`${LOCAL_URL}/api/spotify/access_token`, {
-      method: "GET"
-    });
-
-    return response.json();
-  };
-
   await obtainAccessToken().then((response) => {
-    // Save access token data to Redux
-    // TODO: Hooks only work in front-end code, so the whole Redux setup process needs to be refactored
-    // to actually occur in a one-time useEffect() callback for this page only when the Redux store has
-    // not already been created. getServerSideProps() will simply return the data needed to populate the
-    // Redux store and display page contents
-
     accessTokenData = response;
+
     // TODO: Load initial page data
+
   });
 
   return {
     props: {
-      accessTokenData: accessTokenData,
+      initialAccessTokenData: {
+        accessToken: accessTokenData.accessToken,
+        tokenType: accessTokenData,
+        expireTime: dayjs().add(1, 'hour').format("HH:mm:ss") // Spotify API access tokens last 1 hour
+      },
       initialDisplayData: initialDisplayData
     }
   };

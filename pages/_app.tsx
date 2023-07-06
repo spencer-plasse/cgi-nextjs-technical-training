@@ -2,8 +2,8 @@
 import type { AppProps } from 'next/app'
 
 // Redux
-import { Provider } from 'react-redux'
-import { store } from '../utils/redux/store'
+import { Provider } from 'react-redux';
+import createStore from '../utils/redux/store';
 
 // Styles
 import '../styles/globals.css'
@@ -18,9 +18,17 @@ import '../styles/globals.css'
  * @returns Current page of the website
  */
 export default function App({ Component, pageProps }: AppProps) {
-  return (
-    <Provider store={store}>
-      <Component {...pageProps} />
-    </Provider>
-  )
+  // If the page being loaded contains server-side props with Spotify API access token data,
+  // store it in Redux and wrap the page with a <Provider> for front-end Redux access
+  if (pageProps.initialAccessTokenData) {
+    const store = createStore(pageProps.initialAccessTokenData);
+
+    return (
+      <Provider store={store}>
+        <Component {...pageProps} />
+      </Provider>
+    );
+  }
+
+  return <Component {...pageProps} />
 }

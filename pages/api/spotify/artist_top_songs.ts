@@ -4,6 +4,9 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 // Types
 import { SpotifyAccessTokenResponseData } from '../../../utils/api/types';
 
+// Utility functions
+import { hasAccessTokenExpired } from '../../../utils/api/helpers';
+
 /**
  * TODO
  * 
@@ -16,10 +19,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<SpotifyAccessTokenResponseData>
 ) {
-  const accessToken = "";
-
-  // An access token will be required to execute any other Spotify API calls
-  if (!accessToken) {
+  // A non-expired access token will be required to execute any other Spotify API calls
+  if (!req.body.accessToken || hasAccessTokenExpired(req.body.accessToken)) {
     res.status(401); // 401: Unauthorized
     return res;
   }
@@ -31,11 +32,8 @@ export default async function handler(
     const response = await fetch(requestURL, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: new URLSearchParams({
-        grant_type: "client_credentials"
-      })
+        Authorization: `Bearer ${req.body.accessToken}`,
+      }
     });
 
     // If the response was anything but successful, clone the code to the response back to the caller

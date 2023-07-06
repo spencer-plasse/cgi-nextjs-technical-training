@@ -3,13 +3,13 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 // Types
-import { SpotifyAccessTokenResponseData, SpotifyAccessTokenSliceData } from '../api/types'
+import { SpotifyAccessTokenSliceData } from '../api/types'
 
 // Definition of initial state prior to obtaining a Spotify API access token
 const initialState: SpotifyAccessTokenSliceData = {
-    access_token: "",
-    token_type: "",
-    expire_time: -1
+    accessToken: "",
+    tokenType: "",
+    expireTime: ""
 }
 
 /**
@@ -24,10 +24,10 @@ export const apiSlice = createSlice({
      * or the current one has expired.
      * 
      * @param state Current state of the apiSlice access token data
-     * @param action `PayloadAction` containing `SpotifyAccessTokenResponseData` to set the new access token with
+     * @param action `PayloadAction` containing `SpotifyAccessTokenSliceData` to set the new access token with
      */
-    refreshAccessToken: (state, action: PayloadAction<SpotifyAccessTokenResponseData>) => {
-        // TODO: If the current access token is expired, refresh it
+    refreshAccessToken: (state, action: PayloadAction<SpotifyAccessTokenSliceData>) => {
+      state = {...action.payload}
     }
   },
 })

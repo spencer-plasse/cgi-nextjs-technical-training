@@ -60,7 +60,11 @@ export default async function handler(
     const accessTokenData = await response.json();
 
     if (accessTokenData) {
-      res.status(200).json(accessTokenData); // 200: OK
+      res.status(200).json({
+        accessToken: accessTokenData.access_token,
+        tokenType: accessTokenData.token_type,
+        expiresIn: accessTokenData.expires_in
+      }); // 200: OK
     }
 
     // If the client authenticated to the Spotify API but no data was returned, assume a server error by default
