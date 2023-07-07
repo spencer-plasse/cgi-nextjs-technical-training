@@ -12,7 +12,7 @@ export const SpotifyTopSongList = (props: {
 }) => {
 	return (
 		<div>
-			{props.songs.map(song => <SpotifySong name={song} />)}
+			{props.songs.map(song => <SpotifySong name={song} key={song} />)}
 		</div>
 	)
 }

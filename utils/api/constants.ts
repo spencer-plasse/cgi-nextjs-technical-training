@@ -14,11 +14,20 @@ export const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
  * - The Killers
  * - Weezer
  */
-export const SPOTIFY_ARTIST_IDS = {
-    "Twenty One Pilots": "3YQKmKGau1PzlVlkL1iodx",
-    "The Killers": "0C0XlULifJtAgn6ZNCW2eu",
-    "Weezer": "3jOstUTkEu2JkjvRdBA5Gu"
-}
+export const SPOTIFY_ARTIST_IDS = [
+    {
+        name: "Twenty One Pilots",
+        id: "3YQKmKGau1PzlVlkL1iodx"
+    },
+    {
+        name: "The Killers",
+        id: "0C0XlULifJtAgn6ZNCW2eu"
+    },
+    {
+        name: "Weezer",
+        id: "3jOstUTkEu2JkjvRdBA5Gu"
+    }
+]
 
 /**
  * 

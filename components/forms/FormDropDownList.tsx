@@ -20,6 +20,7 @@ import { FormDropDownListDataType } from "../../utils/forms/types";
 export const FormDropDownList = (props: {
 	id: string,
 	options: Array<FormDropDownListDataType>,
+	onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void,
 	labelText: string,
 	required?: boolean
 }) => {
@@ -29,8 +30,12 @@ export const FormDropDownList = (props: {
 				{props.labelText}{props.required ? "*" : ""}
 			</span>
 
-			<select id={props.id} className="mt-2 block w-full rounded-lg">
-				{props.options.map(option => <option value={option.value} selected={option === props.options[0]}>{option.displayText}</option>)}
+			<select id={props.id} className="mt-2 block w-full rounded-lg" onChange={props.onChange}>
+				{props.options.map(option =>
+					<option value={option.value} key={option.value} selected={option === props.options[0]}>
+						{option.displayText}
+					</option>
+				)}
 			</select>
 		</FormElement>
 	);

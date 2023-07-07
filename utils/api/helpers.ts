@@ -11,8 +11,11 @@ import { LOCAL_URL } from "../constants";
  */
 export const obtainAccessToken = async () => {
 	const response = await fetch(`${LOCAL_URL}/api/spotify/access_token`, {
-		method: "GET"
-	});
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
 	return response.json();
 };
@@ -31,12 +34,20 @@ export const hasAccessTokenExpired = (expire_time: string) => {
 /**
  * Asynchronous wrapper function for the API call to get info on a Spotify artist.
  * 
+ * @param artistId Spotify ID of the selected artist
+ * 
  * @returns Access token response data from the /api/spotify/artist_info API route
  */
-export const getArtistInfo = async () => {
-	const response = await fetch(`${LOCAL_URL}/api/spotify/artist_info`, {
-		method: "GET"
-	});
+export const getArtistInfo = async (artistId: string) => {
+	const response = await fetch("api/spotify/artist_info", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      artistId: artistId
+    })
+  });
 
 	return response.json();
 };
@@ -44,12 +55,20 @@ export const getArtistInfo = async () => {
 /**
  * Asynchronous wrapper function for the API call to get a Spotify artist's top 10 songs.
  * 
+ * @param artistId Spotify ID of the selected artist
+ * 
  * @returns Access token response data from the /api/spotify/artist_top_songs API route
  */
-export const getArtistTop10Songs = async () => {
-	const response = await fetch(`${LOCAL_URL}/api/spotify/artist_top_songs`, {
-		method: "GET"
-	});
+export const getArtistTop10Songs = async (artistId: string) => {
+  const response = await fetch("/api/spotify/artist_top_songs", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      artistId: artistId
+    })
+  });
 
-	return response.json();
+  return response.json();
 };

@@ -1,5 +1,5 @@
 // React
-import { useState } from "react";
+import React, { useState } from "react";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +20,8 @@ import { SPOTIFY_ACCESS_TOKEN_RESPONSE_DATA_INIT, SPOTIFY_ARTIST_IDS } from "../
 
 // Types
 import { FormDropDownListDataType } from "../utils/forms/types";
-import { SpotifyAccessTokenResponseData, SpotifyAccessTokenSliceData } from '../utils/api/types';
+import { SpotifyAccessTokenResponseData } from '../utils/api/types';
+import { SpotifyAccessTokenSliceData } from '../utils/redux/types';
 
 // Utility functions
 import { getArtistInfo, getArtistTop10Songs, hasAccessTokenExpired, obtainAccessToken } from '../utils/api/helpers';
@@ -40,16 +41,13 @@ export default function SpotifyAPIPage(props: {
   const dispatch = useDispatch();
 
   const [displayData, setDisplayData] = useState<React.ReactNode>();
-  let artistDropDownData: Array<FormDropDownListDataType> = [];
-
-  // Would've been a bit more concise in Python...this converts the SPOTIFY_ARTIST_IDS dictionary
-  // to an array of dictionaries with displayText and value fields for the form's dropdown list
-  for (const [key, value] of Object.entries(SPOTIFY_ARTIST_IDS)) {
-    artistDropDownData.push({
-      displayText: key,
-      value: value
-    });
-  }
+  const [selectedArtistId, setSelectedArtistId] = useState<string>("");
+  let artistDropDownData: Array<FormDropDownListDataType> = SPOTIFY_ARTIST_IDS.map(artist => {
+    return {
+      displayText: artist.name,
+      value: artist.id
+    }
+  });
 
   /**
    * Async wrapper function to refresh the Spotify API access token if it has expired.
@@ -67,7 +65,7 @@ export default function SpotifyAPIPage(props: {
    */
   const handleDisplayArtistInfo = async () => {
     await refreshAccessTokenData();
-    await getArtistInfo().then(response => {
+    await getArtistInfo(selectedArtistId).then(response => {
       setDisplayData(<SpotifyArtistInfo />);
     });
   }
@@ -77,7 +75,7 @@ export default function SpotifyAPIPage(props: {
    */
   const handleDisplayTop10Songs = async () => {
     await refreshAccessTokenData();
-    await getArtistTop10Songs().then(response => {
+    await getArtistTop10Songs(selectedArtistId).then(response => {
       setDisplayData(<SpotifyTopSongList songs={["Truce", "Goner", "Leave the City", "Redecorate"]} />);
     });
   }
@@ -89,7 +87,10 @@ export default function SpotifyAPIPage(props: {
 
       <form className="w-1/3 border-slate-500 border-2 rounded-md border-solid p-8">
         <div className="mb-4">
-          <FormDropDownList id="artist" options={artistDropDownData} labelText="Artist" required />
+          <FormDropDownList id="artist" options={artistDropDownData} labelText="Artist" required 
+            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+              setSelectedArtistId(event.target.value)
+            }} />
         </div>
 
         <div className="text-center">
@@ -123,7 +124,8 @@ export async function getServerSideProps() {
       initialAccessTokenData: {
         accessToken: accessTokenData.accessToken,
         tokenType: accessTokenData,
-        expireTime: dayjs().add(1, 'hour').format("HH:mm:ss") // Spotify API access tokens last 1 hour
+         // Spotify API access tokens last 1 hour
+        expireTime: dayjs().add(accessTokenData.expiresIn, 'milliseconds').format("HH:mm:ss")
       },
       initialDisplayData: initialDisplayData
     }

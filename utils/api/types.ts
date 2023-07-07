@@ -21,14 +21,41 @@ export type SpotifyAccessTokenResponseData = {
 }
 
 /**
- * DTO type representing how the Spotify API access token is stored in Redux:
- * 
- * - `"accessToken"` - Spotify API access token to make other API calls with
- * - `"tokenType"` - Type of access token
- * - `"expireTime"` - Time the access token expires (each access token is valid for 1 hour)
+ * TODO
  */
-export type SpotifyAccessTokenSliceData = {
-  accessToken: string;
-  tokenType: string;
-  expireTime: string;
+export type SpotifyArtistInfoResponseData = {
+  external_urls: {
+    spotify: string
+  };
+  followers: {
+    href?: string;
+    total: number;
+  };
+  genres: Array<string>;
+  href: string;
+  id: string;
+  images: Array<{
+    url: string;
+    width: number;
+    height: number;
+  }>;
+  name: string;
+  popularity: number;
+  type: string;
+  uri: string;
+}
+
+/**
+ * TODO
+ */
+export type SpotifyArtistInfoData = {
+  name: string;
+  followers: number;
+  genres: Array<string>;
+  url: string;
+  image: {
+    url: string;
+    height: number;
+    width: number;
+  }
 }
