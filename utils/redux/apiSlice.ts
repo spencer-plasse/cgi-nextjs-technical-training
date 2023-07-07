@@ -1,9 +1,9 @@
 // Redux
-import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 // Types
-import { SpotifyAccessTokenSliceData } from '../api/types'
+import { SpotifyAccessTokenSliceData } from "../redux/types";
 
 // Definition of initial state prior to obtaining a Spotify API access token
 const initialState: SpotifyAccessTokenSliceData = {
@@ -13,7 +13,7 @@ const initialState: SpotifyAccessTokenSliceData = {
 }
 
 /**
- * TODO
+ * Redux store slice to store access token data used to interact with the Spotify API.
  */
 export const apiSlice = createSlice({
   name: 'api',

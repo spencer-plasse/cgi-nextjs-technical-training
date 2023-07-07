@@ -2,13 +2,15 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 // Types
-import { SpotifyAccessTokenResponseData } from '../../../utils/api/types';
-
-// Utility functions
-import { hasAccessTokenExpired } from '../../../utils/api/helpers';
+import { SpotifyArtistTopSongData, SpotifyArtistTopSongsResponseData } from '../../../utils/api/types';
 
 /**
- * TODO
+ * Handler for an API route to obtain data on a selected artist for on the spotify_api.tsx page.
+ * This data includes artist name (which links to the artist's Spotify page via a URI), follower
+ * count, genres, popularity, and Spotify profile picture.
+ * 
+ * @link Spotify API Get Artist's Top Tracks documentation:
+ * https://developer.spotify.com/documentation/web-api/reference/get-an-artists-top-tracks
  * 
  * @param _ Placeholder for an unused `NextApiRequest` object
  * @param res `NextApiResponse` object containing the response data from the Spotify API
@@ -17,22 +19,23 @@ import { hasAccessTokenExpired } from '../../../utils/api/helpers';
  */
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<SpotifyAccessTokenResponseData>
+  res: NextApiResponse<Array<SpotifyArtistTopSongData>>
 ) {
   // A non-expired access token will be required to execute any other Spotify API calls
-  if (!req.body.accessToken || hasAccessTokenExpired(req.body.accessToken)) {
+  if (!req.query["accessToken"] || !req.query["artistId"]) {
     res.status(401); // 401: Unauthorized
     return res;
   }
 
   try {
-    const requestURL = `https://api.spotify.com/v1/artists/${req.body.artistID}/top-tracks?
-                        ${new URLSearchParams({market: "US"})}`;
+    const accessToken = req.query["accessToken"];
+    const artistId = req.query["artistId"];
+    const requestURL = `https://api.spotify.com/v1/artists/${artistId}/top-tracks?${new URLSearchParams({market: "US"})}`;
 
     const response = await fetch(requestURL, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${req.body.accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
       }
     });
 
@@ -42,10 +45,24 @@ export default async function handler(
       return res;
     }
 
-    const artistInfoData = await response.json();
+    const artistTopSongsData: {
+      tracks: SpotifyArtistTopSongsResponseData
+    } = await response.json();
 
-    if (artistInfoData) {
-      res.status(200).json(artistInfoData); // 200: OK
+    if (artistTopSongsData) {
+      res.status(200).json(artistTopSongsData.tracks.map(song => {
+        return {
+          album: {
+            albumType: song.album.album_type,
+            image: song.album.images[song.album.images.length -1],
+            name: song.album.name,
+            releaseDate: song.album.release_date,
+            uri: song.album.uri,
+          },
+          name: song.name,
+          uri: song.uri,
+        }
+      })); // 200: OK
     }
 
     // If the client authenticated to the Spotify API but no data was returned, assume a server error by default

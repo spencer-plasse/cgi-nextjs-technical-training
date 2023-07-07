@@ -11,6 +11,9 @@ import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from '../../../utils/api/con
  * Handler for a utility API route to obtain a Spotify API access token that can be used
  * to make API calls on the spotify_api.tsx page.
  * 
+ * @link Spotify API Access Token (via Client Credentials) documentation:
+ * https://developer.spotify.com/documentation/web-api/tutorials/client-credentials-flow
+ * 
  * @param _ Placeholder for an unused `NextApiRequest` object
  * @param res `NextApiResponse` object containing the response data from the Spotify API
  * 
@@ -20,21 +23,12 @@ export default async function handler(
   _: NextApiRequest,
   res: NextApiResponse<SpotifyAccessTokenResponseData>
 ) {
-  // TODO: if (access token in Redux store)... return it, else setInterval
-
   // Values for these two constants are required when obtaining an access token
   if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) {
     res.status(401); // 401: Unauthorized
     return res;
   }
 
-  /*
-   * Since Spotify API access tokens expire after an hour, the API call to obtain the token is
-   * set to run on a timer of 1 hour (60 minutes * 60 seconds * 1000 milliseconds). If this call to
-   * obtain a token is made while a token is still active, that access token is returned instead.
-   */
-  //setInterval(async () => {
-    // See here for API request reference: https://developer.spotify.com/documentation/web-api/tutorials/getting-started
   try {
     const response = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",

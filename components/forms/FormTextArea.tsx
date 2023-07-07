@@ -30,13 +30,17 @@ export const FormTextArea = (props: {
 	required?: boolean,
 	register: UseFormRegister<any>
 }) => {
+	const validations = {
+		required: props.required ? "This field is required!" : false
+	};
+
 	return (
 		<FormElement>
 			<span className="text-gray-700 font-bold">
 				{props.labelText}{props.required ? "*" : ""}
 			</span>
 			<textarea rows={props.rows} cols={props.cols} id={props.id}
-				{...props.register(props.name, { required: props.required})}
+				{...props.register(props.name, validations)}
 				className="mt-1 block w-full rounded-lg" placeholder={props.placeholder ?? ""} />
 		</FormElement>
 	);

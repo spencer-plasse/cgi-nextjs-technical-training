@@ -28,4 +28,17 @@ export const ButtonStyles = {
       hoverTextColor: "hover:text-white",
     },
   },
+
+  /**
+   * Style for normal buttons - blue border and text with blue background
+   * on hover and white text.
+   */
+  button: {
+    borderColor: "border-blue-500",
+    textColor: "text-blue-500",
+    hover: {
+      hoverBackgroundColor: "hover:bg-blue-500",
+      hoverTextColor: "hover:text-white",
+    },
+  }
 };

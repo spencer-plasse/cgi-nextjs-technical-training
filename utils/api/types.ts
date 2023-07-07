@@ -11,7 +11,7 @@ export type ContactFormResponseData = {
  * DTO type representing the Spotify API response with access token data:
  * 
  * - `"accessToken"` - Spotify API access token to make other API calls with
- * - `"accessToken"` - Type of access token
+ * - `"tokenType"` - Type of access token
  * - `"expiresIn"` - When the access token expires (each access token is valid for 1 hour)
  */
 export type SpotifyAccessTokenResponseData = {
@@ -21,19 +21,13 @@ export type SpotifyAccessTokenResponseData = {
 }
 
 /**
- * TODO
+ * DTO type representing some of the response data from the "Get Artist" Spotify API endpoint.
  */
 export type SpotifyArtistInfoResponseData = {
-  external_urls: {
-    spotify: string
-  };
   followers: {
-    href?: string;
     total: number;
   };
   genres: Array<string>;
-  href: string;
-  id: string;
   images: Array<{
     url: string;
     width: number;
@@ -46,16 +40,57 @@ export type SpotifyArtistInfoResponseData = {
 }
 
 /**
- * TODO
+ * DTO type representing the data that is displayed on the API page for a selected artist when the
+ * "Display Artist Info" button is clicked.
  */
 export type SpotifyArtistInfoData = {
-  name: string;
   followers: number;
   genres: Array<string>;
-  url: string;
   image: {
     url: string;
     height: number;
     width: number;
-  }
+  };
+  name: string;
+  popularity: number;
+  uri: string;
+}
+
+/**
+ * DTO type representing some of the response data from the "Get Artist's Top Tracks" Spotify API endpoint.
+ */
+export type SpotifyArtistTopSongsResponseData = Array<{
+  album: {
+    album_type: string;
+    images: Array<{
+      url: string;
+      width: number;
+      height: number;
+    }>;
+    name: string;
+    release_date: string;
+    uri: string;
+  };
+  name: string;
+  uri: string;
+}>
+
+/**
+ * DTO type representing the data that is displayed on the API page for a selected artist when the
+ * "Display Top 10 Songs" button is clicked.
+ */
+export type SpotifyArtistTopSongData = {
+  album: {
+    albumType: string;
+    image: {
+      url: string;
+      width: number;
+      height: number;
+    };
+    name: string;
+    releaseDate: string;
+    uri: string;
+  };
+  name: string;
+  uri: string;
 }

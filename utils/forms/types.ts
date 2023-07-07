@@ -11,8 +11,9 @@ export type FormElementPositionType = "block" | "inline";
  * 
  * - `"submit"` - Submit the form that the button resides in
  * - `"reset"` - Reset data in the form that the button resides in
+ * - `"button"` - Default ("normal") button type, used for typical buttons
  */
-export type FormButtonType = "submit" | "reset";
+export type FormButtonType = "submit" | "reset" | "button";
 
 /**
  * Type union containing the possible options for the `type` attribute on a text input:
@@ -33,6 +34,15 @@ export type ContactFormInputsType = {
   name: string;
   emailAddress: string;
   message: string;
+};
+
+/**
+ * DTO type representing the user input from the API page's form:
+ * 
+ * - `artist` - String user input from a dropdown list containing an artist's name
+ */
+export type SpotifyAPIDemoFormInputsType = {
+  artist: string;
 };
 
 /**
