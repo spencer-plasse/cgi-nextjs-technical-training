@@ -14,6 +14,8 @@ export const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
  * - Eric Church
  * - George Strait
  * - Grizfolk
+ * - half•alive
+ * - Nathaniel Rateliff & The Night Sweats
  * - Taylor Swift
  * - Twenty One Pilots
  * - The Killers
@@ -21,36 +23,44 @@ export const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
  */
 export const SPOTIFY_ARTIST_IDS = [
 	{
-			name: "Eagles",
-			id: "0ECwFtbIWEVNwjlrfc6xoL"
+		name: "Eagles",
+		id: "0ECwFtbIWEVNwjlrfc6xoL"
 	},
 	{
-			name: "Eric Church",
-			id: "2IvkS5MXK0vPGnwyJsrEyV"
+		name: "Eric Church",
+		id: "2IvkS5MXK0vPGnwyJsrEyV"
 	},
 	{
-			name: "George Strait",
-			id: "5vngPClqofybhPERIqQMYd"
+		name: "George Strait",
+		id: "5vngPClqofybhPERIqQMYd"
 	},
 	{
-			name: "Grizfolk",
-			id: "6Xa4nbrSTfbioA4lLShbjh"
+		name: "Grizfolk",
+		id: "6Xa4nbrSTfbioA4lLShbjh"
 	},
 	{
-			name: "Taylor Swift",
-			id: "06HL4z0CvFAxyc27GXpf02"
+		name: "half•alive",
+		id: "7sOR7gk6XUlGnxj3p9F54k"
 	},
 	{
-			name: "Twenty One Pilots",
-			id: "3YQKmKGau1PzlVlkL1iodx"
+		name: "Nathaniel Rateliff & The Night Sweats",
+		id: "02seUFsFQP7TH4hLrTj77o"
 	},
 	{
-			name: "The Killers",
-			id: "0C0XlULifJtAgn6ZNCW2eu"
+		name: "Taylor Swift",
+		id: "06HL4z0CvFAxyc27GXpf02"
 	},
 	{
-			name: "Weezer",
-			id: "3jOstUTkEu2JkjvRdBA5Gu"
+		name: "Twenty One Pilots",
+		id: "3YQKmKGau1PzlVlkL1iodx"
+	},
+	{
+		name: "The Killers",
+		id: "0C0XlULifJtAgn6ZNCW2eu"
+	},
+	{
+		name: "Weezer",
+		id: "3jOstUTkEu2JkjvRdBA5Gu"
 	}
 ]
 
