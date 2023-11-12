@@ -51,7 +51,7 @@ export default function SpotifyAPIPage() {
     name: "",
     id: ""
   });
-  let artistDropDownData: Array<FormDropDownListDataType> = SPOTIFY_ARTIST_IDS.map(artist => {
+  const artistDropDownData: Array<FormDropDownListDataType> = SPOTIFY_ARTIST_IDS.map(artist => {
     return {
       displayText: artist.name,
       value: artist.id
